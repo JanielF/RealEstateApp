@@ -1,0 +1,53 @@
+﻿@using RealEstateApp.Core.Application.ViewModels.Account;
+@model LoginViewModel;
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container-fluid d-flex flex-column p-0 w-100 h-100 p-3 mx-auto mt-auto mb-auto">
+    <div class="container mt-auto mb-auto  d-flex align-items-center justify-content-center">
+        <div class="col-sm-9 col-md-7 col-lg-5 rounded-5 inputBackground border d-flex align-items-center justify-content-center py-5 px-1 box-shadow">
+            <div class="col-12 d-flex justify-content-center align-content-center">
+                <div class="col-8">
+                    <div class="">
+                        <div class="text-center mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
+                                <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4z" />
+                            </svg>
+                        </div>
+                        <div class="text-center">
+                            <h2 class="tittle fw-bold">Real State App</h2>
+                            <p class="">Welcome back!</p>
+                        </div>
+                    </div>
+                    <div class="">
+                        <form method="post" asp-controller="User" asp-action="Index">
+                            <div class="mb-3">
+                                <label asp-for="Input" class="form-label darkBlueText fw-bold">Username or email</label>
+                                <input asp-for="Input" class="form-control" />
+                                <span asp-validation-for="Input" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Password" class="form-label darkBlueText fw-bold">Password</label>
+                                <input asp-for="Password" class="form-control" id="exampleFormControlInput2" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div>
+                                <button type="submit" class="btn principalBlue btnPrincipalBlueHover border-0 btn-info fw-bold w-100">
+                                    Login
+                                </button>
+                            </div>
+                            @if (Model.HasError)
+                            {
+                                <div class="alert alert-danger alert-dismissible mt-3 fade show" role="alert">
+                                    <p class="mb-0">@Model.Error</p>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            }
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

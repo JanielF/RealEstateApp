@@ -1,0 +1,111 @@
+﻿@using RealEstateApp.Core.Application.ViewModels.Account;
+@using RealEstateApp.Core.Application.Enums.Roles;
+@model SaveUserViewModel;
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+<div class="container p-2 px-5 d-flex justify-content-center">
+    <div class="row py-5 rounded-5 inputBackground border">
+        <h2 class="p-0 text-center fw-bold">Register</h2>
+        <div class="d-flex justify-content-center">
+            <div class="py-4 px-4 col-7">
+                <form method="post" enctype="multipart/form-data" asp-controller="User" asp-action="Create">
+                    @if (Model.HasError)
+                    {
+                        <div class="alert alert-danger alert-dismissible mt-3 fade show" role="alert">
+                            <p class="mb-0">@Model.Error</p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                    <div class="mb-4 d-flex justify-content-center gap-4">
+                        <div class="col-8">
+                            <div class="mb-3">
+                                <label asp-for="FirstName" class="form-label fw-bold">First name</label>
+                                <input asp-for="FirstName" class="form-control inputCustomize" />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="LastName" class="form-label fw-bold">Last name</label>
+                                <input asp-for="LastName" class="form-control inputCustomize" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="PhoneNumber" class="form-label fw-bold">Phone number</label>
+                                <input asp-for="PhoneNumber" class="form-control inputCustomize" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="DocumentId" class="form-label fw-bold">Document ID</label>
+                                <input asp-for="DocumentId" class="form-control inputCustomize" />
+                                <span asp-validation-for="DocumentId" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="UserImage" class="form-label fw-bold">Photo</label>
+                                <input required asp-for="UserImage" type="file" class="form-control" />
+                                <span asp-validation-for="UserImage" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-8">
+
+                            <div class="mb-3">
+                                <label asp-for="Username" class="form-label fw-bold">Username</label>
+                                <input asp-for="Username" class="form-control rounded-end-1" />
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Email" class="form-label fw-bold">Email</label>
+                                <input asp-for="Email" class="form-control inputCustomize" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Password" class="form-label fw-bold me-2">Password</label>
+                                <span href="#" id="chuleria" class="text-secondary" data-bs-toggle="tooltip" data-bs-html="true"
+                                      data-bs-placement="right"
+                                      data-bs-title="Must contain one uppercase character, one lowercase character, one digit and one non-alphanumeric character. At least six characters long.">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#A7A9AD"
+                                         class="bi bi-info-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                                    </svg>
+                                </span>
+                                <input asp-for="Password" type="password" id="passwordSign" class="form-control" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="ConfirmPassword" class="form-label fw-bold">Confirm Password</label>
+                                <input asp-for="ConfirmPassword" id="ConfirmPassword" class="form-control" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="roles" class="fw-bold form-label">Select a role:</label>
+                                <select class="form-select" asp-for="Role" id="roles">
+                                    <option value="0">Choose one...</option>
+                                    <option value="@nameof(UserRoles.Customer)">Customer</option>
+                                    <option value="@nameof(UserRoles.RealEstateAgent)">Agent</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-info border-0 btnPrincipalBlueHover principalBlue w-100 fw-bold">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

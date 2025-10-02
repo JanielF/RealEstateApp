@@ -1,0 +1,164 @@
+﻿@using RealEstateApp.Core.Application.ViewModels.RealEstateProperty;
+@model SaveRealEstatePropertyViewModel;
+@{
+    ViewData["Title"] = "Edit Property";
+    int i = 0;
+}
+
+<div class="container p-2 px-5 d-flex justify-content-center align-items-center">
+    <div class="row inputBackground py-5 rounded-5 border col-8">
+        <div class="d-flex justify-content-center align-items-center gap-3 mb-5">
+            <a asp-controller="Agent" asp-action="AgentPropertyMaintenance">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#47FFE9"
+                     class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                          d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z" />
+                </svg>
+            </a>
+            <h2 class="p-0 mb-0 text-center fw-bold">Edit property</h2>
+        </div>
+        <div class="d-flex justify-content-center">
+
+            <form method="post" enctype="multipart/form-data" asp-controller="Property" asp-action="Edit"
+                  class="d-flex justify-content-center align-items-center">
+
+                <div class="col-10">
+
+                    <div class="mb-3">
+                        <label for="ptype" class="fw-bold form-label">
+                            Select the type of property
+                        </label>
+                        <select class="form-select" asp-for="TypePropertyId" asp-items="@(new SelectList(Model.TypeOfPropertyList, "Id", "Name"))" id="ptype">
+                            <option value="0">Choose...</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="stype" class="fw-bold form-label">
+                            Select the type of sale
+                        </label>
+                        <select class="form-select" asp-for="TypeOfSaleId" asp-items="@(new SelectList(Model.TypeOfSaleList, "Id", "Name"))" id="ptype">
+                            <option value="0">Choose...</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3 d-flex gap-2">
+                        <div class="col-6">
+                            <label asp-for="Price" class="form-label fw-bold">Price</label>
+                            <input asp-for="Price" class="form-control" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                        <div class="col-6">
+                            <label asp-for="Size" class="form-label fw-bold">Size (mt)</label>
+                            <input asp-for="Size" class="form-control" />
+                            <span asp-validation-for="Size" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 d-flex gap-2">
+                        <div class="col-6">
+                            <label asp-for="NumberOfBedrooms" class="form-label fw-bold">Bed(s)</label>
+                            <input asp-for="NumberOfBedrooms" class="form-control" />
+                            <span asp-validation-for="NumberOfBedrooms" class="text-danger"></span>
+                        </div>
+                        <div class="col-6">
+                            <label asp-for="NumberOfBathrooms" class="form-label fw-bold">Bath(s)</label>
+                            <input asp-for="NumberOfBathrooms" class="form-control" />
+                            <span asp-validation-for="NumberOfBathrooms" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Address" class="form-label fw-bold">Address</label>
+                        <input asp-for="Address" multiple class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label fw-bold">Property description</label>
+                        <textarea asp-for="Description" class="form-control" style="height: 100px"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Upgrades" class="form-label fw-bold me-2">Upgrades</label>
+                        <select class="selectpicker" asp-for="Upgrades" multiple aria-label="size 3 select example" asp-items="@(new MultiSelectList(Model.UpgradeList, "Id", "Name"))">
+                        </select>
+                        <span asp-validation-for="Upgrades" class="text-danger"></span>
+                    </div>
+
+                    @foreach (string imagePath in Model.ImagesPath)
+                    {
+                        i++;
+                        <div class="mb-3 image-container" data-image-path="@imagePath">
+                            <div class="mb-3">
+                                <img id="image-preview-@i" src="@imagePath" class="object-fit-cover rounded" height="200" width="100%" alt="">
+                            </div>
+                            <div class="mb-3">
+                                <span asp-validation-for="Images" class="text-danger"></span>
+                            </div>
+                            <button type="button" class="btn btn-danger remove-image">Remove Image</button>
+                            <input type="hidden" asp-for="ImagesPath" value="@imagePath" />
+                        </div>
+                    }
+                    <div class="mb-3">
+                        <label asp-for="Images" class="form-label fw-bold">Add images</label>
+                        <input asp-for="Images" multiple class="form-control" />
+                        <span asp-validation-for="Images" class="text-danger"></span>
+                    </div>
+
+                    @if (Model.HasError)
+                    {
+                        <div class="alert alert-danger alert-dismissible mt-3 fade show" role="alert">
+                            <p class="mb-0">@Model.Error</p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-info border-0 principalBlue btnPrincipalBlueHover w-100 fw-bold">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const imageContainers = document.querySelectorAll('.image-container');
+    imageContainers.forEach(container => {
+        const removeButton = container.querySelector('.remove-image');
+        removeButton.addEventListener('click', function () {
+            const containerToRemove = this.parentElement; // Get the entire image container
+            containerToRemove.parentNode.removeChild(containerToRemove);
+
+            // // Update the hidden input with the removed image path (if needed)
+            // const imagePathInput = containerToRemove.querySelector('input[type="hidden"]');
+            // if (imagePathInput) {
+            //     // Logic to handle updating your model or form data with the removed image path
+            //     // This might involve removing the path from an array or setting a flag
+            // }
+        });
+    });
+
+    function previewImage(input, previewId) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var preview = document.getElementById(previewId);
+                preview.src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    var fileInputs = document.querySelectorAll('input[type="file"]');
+    fileInputs.forEach(function (input) {
+        input.addEventListener('change', function () {
+            var previewId = this.dataset.previewId;
+            previewImage(this, previewId);
+        });
+    });
+</script>

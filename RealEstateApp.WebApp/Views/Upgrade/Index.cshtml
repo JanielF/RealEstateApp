@@ -1,0 +1,92 @@
+﻿@using RealEstateApp.Core.Application.ViewModels.Upgrade;
+@model List<UpgradeViewModel>;
+@{
+    ViewData["Title"] = "Upgrades";
+    int counter = 0;
+}
+
+<div class="container p-4 px-5">
+    <div class="row">
+        <h1 class="p-0 mb-4">Upgrades</h1>
+        <div class="table-responsive py-5 px-5 border rounded-4 inputBackground">
+            <div class="d-flex justify-content-start">
+                <a type="button" asp-controller="Upgrade" asp-action="Create" class="btn btn-outline-info btn-outline-customize mb-4 fw-medium rounded-5 gap-2 d-flex justify-content-center align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                    </svg>
+                    New upgrade
+                </a>
+            </div>
+            @if (Model.Count == 0 || Model == null)
+            {
+                <div class="d-flex justify-content-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="#47FFE9" class="bi bi-inbox"
+                         viewBox="0 0 16 16">
+                        <path d="M4.98 4a.5.5 0 0 0-.39.188L1.54 8H6a.5.5 0 0 1 .5.5 1.5 1.5 0 1 0 3 0A.5.5 0 0 1 10 8h4.46l-3.05-3.812A.5.5 0 0 0 11.02 4zm9.954 5H10.45a2.5 2.5 0 0 1-4.9 0H1.066l.32 2.562a.5.5 0 0 0 .497.438h12.234a.5.5 0 0 0 .496-.438zM3.809 3.563A1.5 1.5 0 0 1 4.981 3h6.038a1.5 1.5 0 0 1 1.172.563l3.7 4.625a.5.5 0 0 1 .105.374l-.39 3.124A1.5 1.5 0 0 1 14.117 13H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .106-.374z" />
+                    </svg>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <p class="fs-4 fw-medium">Oops, it looks like you don't have any upgrades added.</p>
+                </div>
+            }
+            else
+            {
+                <table class="table border-0 table-borderless align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (UpgradeViewModel upgrade in Model)
+                        {
+                            counter++;
+                            string modalDeleteId = $"DeleteModal{upgrade.Id}";
+                            <tr>
+                                <td>@counter</td>
+                                <td>@upgrade.Name</td>
+                                <td>@upgrade.Description</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a type="button" asp-controller="Upgrade" asp-action="Edit" asp-route-Id="@upgrade.Id" class="btn btn-outline-secondary d-flex align-items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
+                                            </svg>
+                                        </a>
+
+                                        <a type="button" data-bs-toggle="modal" data-bs-target="#@modalDeleteId" class="btn btn-outline-secondary rounded-end-2 d-flex align-items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
+                                            </svg>
+                                        </a>
+
+                                        <!-- Modal - Delete Product -->
+                                        <div class="modal fade p-4 py-md-5" tabindex="-1" role="dialog" id="@modalDeleteId" data-bs-backdrop="static">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content rounded-3 shadow">
+                                                    <div class="modal-body p-4 text-center">
+                                                        <h5 class="mb-3 fw-bold">Delete this upgrade? @upgrade.Name</h5>
+                                                        <p class="mb-0">You can always change your mind and go back.</p>
+                                                    </div>
+                                                    <div class="modal-footer flex-nowrap p-0">
+                                                        <a class="btn btn-lg btn-link hightlightedBTN fs-6 text-decoration-none col-6 py-3 m-0 rounded-0 border-end" asp-controller="Upgrade" asp-action="Delete" asp-route-Id="@upgrade.Id"><strong>Yes, enable</strong></a>
+                                                        <button type="button" class="btn btn-lg btn-link hightlightedBTN fs-6 text-decoration-none col-6 py-3 m-0 rounded-0" data-bs-dismiss="modal">No thanks</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,280 @@
+﻿@using RealEstateApp.Core.Application.ViewModels.RealEstateProperty;
+@model RealEstatePropertyCustomerViewModel;
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!-- Banner -->
+<div class="container-fluid p-0 mb-5">
+    <div class="p-4 p-md-5 mb-4 text-body-emphasis bg-body-secondary banner d-flex align-items-center">
+        <div class="col-lg-6 px-0 textbanner">
+            <p class="lead mb-4">
+                <a href="#"
+                   class="fw-bold principalBlue p-3 text-decoration-none gap-2 d-flex justify-content-center col-8 col-lg-4 col-md-4 col-sm-6 align-items-center aaa text-dark">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="18"
+                         height="18"
+                         fill="currentColor"
+                         class="bi bi-house-door-fill"
+                         viewBox="0 0 16 16">
+                        <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5" />
+                    </svg>Real State Agency
+                </a>
+            </p>
+            <h1 class="display-4 tittleFont fw-bold col-9">
+                Find the perfect place to live with your family
+            </h1>
+        </div>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="container mb-5">
+    <div class="col-md-12">
+        <div class="h-100 px-5 py-4 bg-body-tertiary border rounded-3">
+            <form class="row g-3 row-cols-md-6 flex-wrap">
+                <div class="col">
+                    <select class="form-select inputBackground" name="TypeOfProperty" asp-items="@(new SelectList(ViewBag.TypeOfProperty, "Id", "Name"))">
+                        <option value="0">All types</option>
+                    </select>
+                </div>
+
+                <div class="col">
+                    <select class="form-select inputBackground" name="NumberOfBathrooms">
+                        <option value="0">Baths</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                    </select>
+                </div>
+
+                <div class="col">
+                    <select class="form-select inputBackground" name="NumberOfBedrooms">
+                        <option value="0">Beds</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                    </select>
+                </div>
+
+                <div class="col">
+                    <input type="text"
+                           class="form-control inputBackground"
+                           name="MinPrice"
+                           placeholder="$ Min" />
+                </div>
+
+                <div class="col">
+                    <input type="text"
+                           class="form-control inputBackground"
+                           name="MaxPrice"
+                           placeholder="$ Max" />
+                </div>
+
+                <div class="col">
+                    <button class="btn btn-info w-100 fw-bold border-0 principalBlue btnPrincipalBlueHover"
+                            type="submit">
+                        Filter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Search by code -->
+<div class="container mb-5">
+    <h2 class="text-center principalBlueText fw-bold">Properties</h2>
+    <div class="col-12">
+        <form method="post" asp-controller="Home" asp-action="GetPropertyByGuid">
+            <div class="col-12 d-flex justify-content-end">
+                <div class="col-3 d-flex gap-2">
+                    <input type="text"
+                           class="form-control inputBackground"
+                           placeholder="Search code..." />
+                    <button class="btn btn-info fw-bold border-0 principalBlue btnPrincipalBlueHover d-flex gap-2 align-items-center"
+                            type="button">
+                        Search
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             width="14"
+                             height="14"
+                             fill="currentColor"
+                             class="bi bi-search"
+                             viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- List of properties -->
+@if (Model.Properties == null || Model.Properties.Count == 0)
+{
+    <div class="container-fluid d-flex flex-column p-0 w-100 h-100 p-3 mx-auto">
+        <div class="container mt-auto mb-auto d-flex align-items-center justify-content-center">
+            <div class="col-sm-9 col-md-7 col-lg-5 rounded-5 inputBackground border d-flex align-items-center justify-content-center py-5 px-1 box-shadow">
+                <div class="col-12 d-flex justify-content-center align-content-center">
+                    <div class="col-8">
+                        <div class="text-center mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="#47FFE9"
+                                 class="bi bi-house-slash" viewBox="0 0 16 16">
+                                <path d="M13.879 10.414a2.5 2.5 0 0 0-3.465 3.465zm.707.707-3.465 3.465a2.501 2.501 0 0 0 3.465-3.465m-4.56-1.096a3.5 3.5 0 1 1 4.949 4.95 3.5 3.5 0 0 1-4.95-4.95Z" />
+                                <path d="M7.293 1.5a1 1 0 0 1 1.414 0L11 3.793V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v3.293l2.354 2.353a.5.5 0 0 1-.708.708L8 2.207l-5 5V13.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 2 13.5V8.207l-.646.647a.5.5 0 1 1-.708-.708z" />
+                            </svg>
+                        </div>
+                        <div class="text-center">
+                            <h2 class="tittle fw-bold">No properties</h2>
+                            <p class="mb-0">It looks like no properties have been added yet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container mb-5">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+
+
+            @foreach (RealEstatePropertyViewModel property in Model.Properties)
+            {
+                <div class="col">
+                    <a asp-controller="Home" asp-action="PropertyDetails" asp-route-Id="@property.Id" class="text-decoration-none">
+                        <div class="card inputBackground cardCustomize shadow-sm">
+                            <div class="image_container position-relative">
+                                <div class="image-tittle p-2 ms-4 mt-4 px-3 position-absolute">
+                                    <p class="mb-0 text-black fw-bold text-center">@property.TypeOfSale.Name</p>
+                                </div>
+                                @if (property.Images == null || property.Images.Count == 0)
+                                {
+                                    <img src="https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"
+                                         class="card-img-top object-fit-cover"
+                                         width="100"
+                                         height="225"
+                                         alt="house" />
+                                }
+                                else
+                                {
+                                    <img src="@property.Images.First()"
+                                         class="card-img-top object-fit-cover"
+                                         width="100"
+                                         height="225"
+                                         alt="house" />
+                                }
+                            </div>
+                            <div class="card-body px-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <p class="card-text fw-bold small mb-0 text-white">@property.TypeProperty.Name</p>
+
+                                    @if (Model.FavoriteProperties.Contains(property.Id))
+                                    {
+                                        <a asp-controller="Home" asp-action="RemoveFavoriteProperty" asp-route-Id="@property.Id">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#47FFE9" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                                            </svg>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="Home" asp-action="AddFavoriteProperty" asp-route-Id="@property.Id">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#47FFE9" class="bi bi-heart"
+                                                 viewBox="0 0 16 16">
+                                                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+                                            </svg>
+                                        </a>
+                                    }
+
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <p class="card-text text-muted small mb-0 d-flex align-items-center gap-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             width="16"
+                                             height="16"
+                                             fill="#47FFE9"
+                                             class="bi bi-geo-alt"
+                                             viewBox="0 0 16 16">
+                                            <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10" />
+                                            <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+                                        </svg>
+                                        @property.Address
+                                    </p>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+                                    <div class="d-flex align-items-center flex-wrap gap-1">
+                                        <p class="card-text small mb-0 fw-medium">Cod.</p>
+                                        <p class="card-text small mb-0 text-muted">@property.Guid</p>
+                                    </div>
+                                    <p class="mb-0 fw-bold principalBlueText">RD$@property.Price</p>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex gap-4 flex-wrap">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                 width="20"
+                                                 height="13"
+                                                 viewBox="0 0 20 13"
+                                                 fill="none">
+                                                <path d="M0 11V6C0 5.704 0.0853334 5.38867 0.256 5.054C0.426667 4.71933 0.674667 4.468 1 4.3V2C1 1.436 1.19233 0.961667 1.577 0.577C1.96167 0.192333 2.436 0 3 0H7.5C7.84467 0 8.139 0.0709998 8.383 0.213C8.62633 0.354333 8.832 0.55 9 0.8C9.168 0.55 9.37367 0.354333 9.617 0.213C9.861 0.0709998 10.1553 0 10.5 0H15C15.564 0 16.0383 0.192333 16.423 0.577C16.8077 0.961667 17 1.436 17 2V4.3C17.3253 4.468 17.5733 4.71933 17.744 5.054C17.9147 5.38867 18 5.704 18 6V11H17V9H1V11H0ZM9.5 4H16V2C16 1.71667 15.904 1.47933 15.712 1.288C15.52 1.09667 15.2827 1.00067 15 1H10.5C10.2167 1 9.97933 1.096 9.788 1.288C9.59667 1.48 9.50067 1.71733 9.5 2V4ZM2 4H8.5V2C8.5 1.71667 8.404 1.47933 8.212 1.288C8.02 1.09667 7.78267 1.00067 7.5 1H3C2.71667 1 2.47933 1.096 2.288 1.288C2.09667 1.48 2.00067 1.71733 2 2V4ZM1 8H17V6C17 5.71667 16.904 5.47933 16.712 5.288C16.52 5.09667 16.2827 5.00067 16 5H2C1.71667 5 1.47933 5.096 1.288 5.288C1.09667 5.48 1.00067 5.71733 1 6V8Z"
+                                                      fill="#47FFE9" />
+                                            </svg>
+                                            <p class="mb-0 fw-light">@property.NumberOfBedrooms</p>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                 width="18"
+                                                 height="18"
+                                                 viewBox="0 0 14 14"
+                                                 fill="none">
+                                                <path fill-rule="evenodd"
+                                                      clip-rule="evenodd"
+                                                      d="M2.69256 0.976665C2.10456 0.976665 1.62791 1.45319 1.62791 2.04104V6.51014H13.5116C13.6412 6.51014 13.7654 6.56158 13.857 6.65314C13.9485 6.74471 14 6.8689 14 6.99839C14 7.12788 13.9485 7.25207 13.857 7.34363C13.7654 7.43519 13.6412 7.48663 13.5116 7.48663H13.3371C13.3417 7.51593 13.3443 7.54522 13.3462 7.57517C13.3488 7.61293 13.3488 7.65329 13.3488 7.69235V7.71774C13.3488 7.96186 13.3488 8.10508 13.3384 8.26458C13.246 9.7202 12.4593 11.0652 11.3192 11.944C11.3282 11.9583 11.3364 11.9731 11.3439 11.9883L11.9951 13.2903C12.0243 13.3477 12.0419 13.4103 12.0468 13.4746C12.0517 13.5388 12.0438 13.6034 12.0237 13.6646C12.0035 13.7258 11.9714 13.7824 11.9292 13.8312C11.887 13.8799 11.8356 13.9198 11.778 13.9486C11.7203 13.9774 11.6575 13.9945 11.5932 13.9989C11.5289 14.0033 11.4644 13.9949 11.4033 13.9742C11.3423 13.9536 11.2859 13.9211 11.2375 13.8785C11.1891 13.836 11.1496 13.7843 11.1212 13.7264L10.4909 12.4668C9.83945 12.7996 9.12042 12.9789 8.38893 12.9908H8.38437C7.90251 13.009 7.43107 13.0201 7 13.0201C6.56893 13.0201 6.09749 13.009 5.61563 12.9908H5.61107C4.87958 12.9789 4.16055 12.7996 3.50912 12.4668L2.87879 13.7264C2.85045 13.7843 2.81093 13.836 2.76251 13.8785C2.71409 13.9211 2.65773 13.9536 2.59668 13.9742C2.53562 13.9949 2.47108 14.0033 2.40678 13.9989C2.34248 13.9945 2.27968 13.9774 2.22202 13.9486C2.16435 13.9198 2.11296 13.8799 2.07079 13.8312C2.02863 13.7824 1.99653 13.7258 1.97635 13.6646C1.95617 13.6034 1.9483 13.5388 1.95321 13.4746C1.95811 13.4103 1.97569 13.3477 2.00493 13.2903L2.65609 11.9883C2.66358 11.9731 2.67184 11.9583 2.68084 11.944C1.54065 11.0652 0.753395 9.7202 0.661581 8.26458C0.652186 8.08246 0.648711 7.90008 0.651163 7.71774V7.48663H0.488372C0.358848 7.48663 0.234628 7.43519 0.143041 7.34363C0.0514534 7.25207 0 7.12788 0 6.99839C0 6.8689 0.0514534 6.74471 0.143041 6.65314C0.234628 6.56158 0.358848 6.51014 0.488372 6.51014H0.651163V2.04104C0.651124 1.56669 0.816363 1.10714 1.11848 0.741378C1.42059 0.375614 1.84071 0.126484 2.30663 0.0368065C2.77254 -0.0528708 3.25516 0.0225065 3.67151 0.249983C4.08787 0.477459 4.41196 0.842825 4.58809 1.28328L4.65972 1.46231C5.19413 1.32592 5.75864 1.36986 6.26549 1.5873C6.58098 1.72325 6.86623 1.92066 7.10459 2.16801C7.34294 2.41536 7.52964 2.7077 7.65377 3.02796C7.70013 3.1459 7.69881 3.27724 7.65008 3.39423C7.60136 3.51122 7.50904 3.60468 7.39265 3.65487L3.51172 5.32532C3.45165 5.35127 3.38698 5.36488 3.32155 5.36535C3.25611 5.36582 3.19125 5.35314 3.13082 5.32806C3.07038 5.30298 3.01561 5.26601 2.96974 5.21936C2.92387 5.1727 2.88785 5.11731 2.86381 5.05646C2.60791 4.40564 2.61257 3.68129 2.87684 3.03381C3.06244 2.5726 3.3735 2.17254 3.77479 1.87895L3.68102 1.64589C3.60202 1.44836 3.46563 1.27902 3.28944 1.15974C3.11325 1.04045 2.90535 0.976684 2.69256 0.976665ZM1.84474 7.48663H1.77963C1.73834 7.48929 1.69964 7.50762 1.67143 7.53788C1.64323 7.56814 1.62766 7.60803 1.62791 7.64938V7.70342C1.62791 7.96512 1.62791 8.07709 1.63637 8.20273C1.75684 10.1049 3.39126 11.8014 5.28744 11.9935C5.41442 12.0065 5.48474 12.0085 5.65209 12.015C6.12614 12.0325 6.58521 12.0436 7 12.0436C7.41479 12.0436 7.87386 12.0325 8.34791 12.015C8.51526 12.0085 8.58558 12.0059 8.71256 11.9928C10.6087 11.8014 12.2432 10.1049 12.3643 8.20273C12.3721 8.07709 12.3721 7.96512 12.3721 7.70342V7.63897C12.3721 7.63767 12.3721 7.63767 12.3721 7.63897C12.3695 7.59949 12.3526 7.56231 12.3245 7.5344C12.2965 7.50648 12.2592 7.48973 12.2197 7.48729C12.2204 7.48729 12.221 7.48729 12.2197 7.48729H12.2093L12.1559 7.48663H1.84474ZM5.88195 2.48568C5.67773 2.39812 5.45695 2.35587 5.23482 2.36182C5.01269 2.36778 4.79449 2.42181 4.59526 2.52018C4.22409 2.70305 3.93404 3.01715 3.7813 3.40163C3.67838 3.65438 3.63601 3.9277 3.65758 4.19975L6.50967 2.97197C6.34509 2.75899 6.12878 2.5916 5.8813 2.48568"
+                                                      fill="#47FFE9" />
+                                            </svg>
+                                            <p class="mb-0 fw-light">@property.NumberOfBathrooms</p>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                 width="18"
+                                                 height="18"
+                                                 viewBox="0 0 15 15"
+                                                 fill="none">
+                                                <path d="M14.6861 3.84166L11.158 0.313907C11.0585 0.214388 10.9404 0.135444 10.8104 0.0815828C10.6804 0.027722 10.5411 0 10.4004 0C10.2596 0 10.1203 0.027722 9.99032 0.0815828C9.86032 0.135444 9.7422 0.214388 9.64271 0.313907L0.313879 9.6429C0.214369 9.7424 0.135431 9.86053 0.0815755 9.99054C0.0277195 10.1205 0 10.2599 0 10.4006C0 10.5413 0.0277195 10.6807 0.0815755 10.8107C0.135431 10.9407 0.214369 11.0588 0.313879 11.1583L3.84199 14.6861C3.94148 14.7856 4.05959 14.8646 4.18959 14.9184C4.31959 14.9723 4.45893 15 4.59964 15C4.74035 15 4.87969 14.9723 5.00969 14.9184C5.13968 14.8646 5.2578 14.7856 5.35729 14.6861L14.6861 5.3571C14.7856 5.2576 14.8646 5.13947 14.9184 5.00946C14.9723 4.87945 15 4.7401 15 4.59938C15 4.45865 14.9723 4.31931 14.9184 4.1893C14.8646 4.05929 14.7856 3.94116 14.6861 3.84166ZM4.5993 13.9287L1.07186 10.4003L3.21458 8.25738L4.9783 10.0219C5.02807 10.0717 5.08715 10.1112 5.15218 10.1381C5.21721 10.1651 5.2869 10.1789 5.35729 10.1789C5.42767 10.1789 5.49737 10.1651 5.5624 10.1381C5.62742 10.1112 5.68651 10.0717 5.73628 10.0219C5.78605 9.97216 5.82553 9.91306 5.85247 9.84803C5.8794 9.783 5.89326 9.71329 5.89326 9.6429C5.89326 9.57251 5.8794 9.50281 5.85247 9.43778C5.82553 9.37274 5.78605 9.31365 5.73628 9.26388L3.97189 7.5L5.35729 6.11448L7.12101 7.87903C7.22152 7.97955 7.35785 8.03602 7.5 8.03602C7.64215 8.03602 7.77848 7.97955 7.87899 7.87903C7.97951 7.7785 8.03598 7.64216 8.03598 7.5C8.03598 7.35784 7.97951 7.2215 7.87899 7.12097L6.1146 5.3571L7.5 3.97158L9.26372 5.73612C9.31349 5.7859 9.37258 5.82538 9.4376 5.85232C9.50263 5.87926 9.57233 5.89312 9.64271 5.89312C9.7131 5.89312 9.78279 5.87926 9.84782 5.85232C9.91285 5.82538 9.97194 5.7859 10.0217 5.73612C10.0715 5.68635 10.111 5.62726 10.1379 5.56222C10.1648 5.49719 10.1787 5.42749 10.1787 5.3571C10.1787 5.2867 10.1648 5.217 10.1379 5.15197C10.111 5.08694 10.0715 5.02784 10.0217 4.97807L8.25731 3.21419L10.4 1.07129L13.9281 4.59971L4.5993 13.9287Z"
+                                                      fill="#47FFE9" />
+                                            </svg>
+                                            <p class="mb-0 fw-light">@property.Size m²</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @if (ViewBag.CreateResponse != null)
+                                {
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="alert alert-danger alert-dismissible mt-3 fade show" role="alert">
+                                            <p class="mb-0">@ViewBag.CreateResponse.Error</p>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+}

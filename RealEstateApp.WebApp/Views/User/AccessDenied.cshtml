@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using RealEstateApp.Core.Application.Helpers;
+@using RealEstateApp.Core.Application.Dtos.Account;
+@using RealEstateApp.Core.Application.ViewModels.Account
+@using RealEstateApp.Core.Application.Interfaces.Services;
+@inject IHttpContextAccessor httpContextAccessor;
+@inject IUserService userService;
+@{
+    var User = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+    var isAdmin = User != null ? User.Roles.Any(r => r == "Admin") : false;
+    var isDeveloper = User != null ? User.Roles.Any(r => r == "Developer") : false;
+    var isCustomer = User != null ? User.Roles.Any(r => r == "Customer") : false;
+    var isAgent = User != null ? User.Roles.Any(r => r == "RealEstateAgent") : false;
+}﻿
+@{
+    ViewData["Tittle"] = "Access denied";
+}
+
+<div class="container-fluid d-flex flex-column p-0 w-100 h-100 p-3 mx-auto">
+    <div class="container mt-auto mb-auto d-flex align-items-center justify-content-center">
+        <div class="col-sm-9 col-md-7 col-lg-5 rounded-5 inputBackground border d-flex align-items-center justify-content-center py-5 px-1 box-shadow">
+            <div class="col-12 d-flex justify-content-center align-content-center">
+                <div class="col-8">
+                    <div class="text-center mb-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="#FF0000"
+                             class="bi bi-x-octagon" viewBox="0 0 16 16">
+                            <path d="M4.54.146A.5.5 0 0 1 4.893 0h6.214a.5.5 0 0 1 .353.146l4.394 4.394a.5.5 0 0 1 .146.353v6.214a.5.5 0 0 1-.146.353l-4.394 4.394a.5.5 0 0 1-.353.146H4.893a.5.5 0 0 1-.353-.146L.146 11.46A.5.5 0 0 1 0 11.107V4.893a.5.5 0 0 1 .146-.353zM5.1 1 1 5.1v5.8L5.1 15h5.8l4.1-4.1V5.1L10.9 1z" />
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                        </svg>
+                    </div>
+                    <div class="text-center mb-3">
+                        <h2 class="tittle fw-bold">Access Denied</h2>
+                        <p class="mb-0">You do not have access</p>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-12 d-flex justify-content-center">
+                            @if (isAdmin)
+                            {
+                                <a asp-controller="Administrator" asp-action="AdminHome" class="btn btn-outline-light rounded-5">Back to home</a>
+                            } 
+                            else if (isAgent)
+                            {
+                                <a asp-controller="Agent" asp-action="AgentHome" class="btn btn-outline-light rounded-5">Back to home</a>
+                            } 
+                            else if (isCustomer)
+                            {
+                                <a asp-controller="Home" asp-action="CustomerHome" class="btn btn-outline-light rounded-5">Back to home</a>
+                            }
+                            else if (isDeveloper)
+                            {
+                                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-light rounded-5">Back to home</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

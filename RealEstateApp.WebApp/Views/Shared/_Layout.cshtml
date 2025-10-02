@@ -1,0 +1,321 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using RealEstateApp.Core.Application.Helpers;
+@using RealEstateApp.Core.Application.Enums.Roles;
+@using RealEstateApp.Core.Application.Dtos.Account;
+@using RealEstateApp.Core.Application.ViewModels.Account
+@using RealEstateApp.Core.Application.Interfaces.Services;
+@inject IHttpContextAccessor httpContextAccessor;
+@inject IUserService userService;
+@{
+    var User = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+    var isAdmin = User != null ? User.Roles.Any(r => r == nameof(UserRoles.Admin)) : false;
+    var isCustomer = User != null ? User.Roles.Any(r => r == nameof(UserRoles.Customer)) : false;
+    var isAgent = User != null ? User.Roles.Any(r => r == nameof(UserRoles.RealEstateAgent)) : false;
+    var isDeveloper = User != null ? User.Roles.Any(r => r == nameof(UserRoles.Developer)) : false;
+}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark" class="h-100">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - RealEstateApp.WebApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/RealEstateApp.WebApp.styles.css" asp-append-version="true" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css"
+          integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q=="
+          crossorigin="anonymous" />
+    @* <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.0.1/dist/css/multi-select-tag.css"> *@
+
+</head>
+<body class="h-100">
+    <div class="cover-container d-flex w-100 h-100 mx-auto flex-column">
+
+        @if (User != null)
+        {
+            <div class="container mb-auto">
+                <header class="d-flex justify-content-center py-3">
+                    <ul class="nav nav-pills">
+                        @if (isCustomer)
+                        {
+                            <li class="nav-item navlinks">
+                                <a asp-controller="Home" asp-action="CustomerHome"
+                                   class="nav-link d-flex align-items-center gap-2 principalBlueText fw-bold">
+                                    <img src="~/assets/images/IconHouse.png"
+                                         alt="house icon"
+                                         height="25" />Real State App
+                                </a>
+                            </li>
+                            <li class="nav-item navlinks">
+                                <a asp-controller="Home" asp-action="CustomerHome" class="nav-link text-white">Home</a>
+                            </li>
+                            <li class="nav-item navlinks">
+                                <a asp-controller="Home" asp-action="Agents" class="nav-link text-white">Agents</a>
+                            </li>
+                            <li class="nav-item navlinks">
+                                <a asp-controller="Property" asp-action="CustomerProperties" class="nav-link text-white">My properties</a>
+                            </li>
+                        }
+                        else if (isAdmin)
+                        {
+                            <li class="nav-item navlinks">
+                                <a asp-controller="Administrator" asp-action="AdminHome"
+                                   class="nav-link d-flex align-items-center gap-2 principalBlueText fw-bold">
+                                    <img src="~/assets/images/IconHouse.png"
+                                         alt="house icon"
+                                         height="25" />Real State App
+                                </a>
+                            </li>
+                            <li class="nav-item navlinks">
+                                <a asp-controller="Administrator" asp-action="AdminHome" class="nav-link text-white">Home</a>
+                            </li>
+                            <li class="nav-item navlinks">
+                                <a asp-controller="Agent" asp-action="Index" class="nav-link text-white">Agents</a>
+                            </li>
+                            <li class="nav-item navlinks dropdown">
+                                <a href="#" class="dropdown-toggle nav-link text-white" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Maintenances
+                                </a>
+                                <ul class="dropdown-menu shadow">
+                                    <li><a asp-controller="Administrator" asp-action="Index" class="dropdown-item small text-white">Administrators</a></li>
+                                    <li><a asp-controller="Developer" asp-action="Index" class="dropdown-item small text-white">Developers</a></li>
+                                    <li><a asp-controller="PropertyType" asp-action="Index" class="dropdown-item small text-white">Type of Properties</a></li>
+                                    <li><a asp-controller="SalesType" asp-action="Index" class="dropdown-item small text-white">Type of Sales</a></li>
+                                    <li><a asp-controller="Upgrade" asp-action="Index" class="dropdown-item small text-white">Upgrades</a></li>
+                                </ul>
+                            </li>
+                        }
+                        else if(isDeveloper)
+                        {
+
+                        }
+                        else
+                        {
+                            <li class="nav-item navlinks">
+                                <a asp-controller="Agent" asp-action="AgentHome"
+                                   class="nav-link d-flex align-items-center gap-2 principalBlueText fw-bold">
+                                    <img src="~/assets/images/IconHouse.png"
+                                         alt="house icon"
+                                         height="25" />Real State App
+                                </a>
+                            </li>
+                            <li class="nav-item navlinks">
+                                <a asp-controller="Agent" asp-action="AgentHome" class="nav-link text-white">Home</a>
+                            </li>
+                            <li class="nav-item navlinks">
+                                <a asp-controller="Agent" asp-action="AgentPropertyMaintenance" class="nav-link text-white">Property maintenance</a>
+                            </li>
+                            <li class="nav-item navlinks">
+                                <a asp-controller="Agent" asp-action="Edit" asp-route-Id="@User.Id" class="nav-link text-white">My profile</a>
+                            </li>
+                        }
+                        <li class="nav-item navlinks">
+                            <a asp-controller="User" asp-action="LogOut" class="nav-link text-danger fw-bold">Log out</a>
+                        </li>
+                    </ul>
+                </header>
+            </div>
+        }
+        else
+        {
+            <div class="container mb-auto">
+                <header class="d-flex justify-content-center py-3">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item navlinks">
+                            <a asp-controller="Home" asp-action="Index"
+                               class="nav-link d-flex align-items-center gap-2 principalBlueText fw-bold">
+                                <img src="~/assets/images/IconHouse.png"
+                                     alt="house icon"
+                                     height="25" />Real State App
+                            </a>
+                        </li>
+                        <li class="nav-item navlinks">
+                            <a asp-controller="Home" asp-action="Index" class="nav-link text-white">Home</a>
+                        </li>
+                        <li class="nav-item navlinks">
+                            <a asp-controller="Home" asp-action="Agents" class="nav-link text-white">Agents</a>
+                        </li>
+                        <li class="nav-item navlinks">
+                            <a asp-controller="User" asp-action="Create" class="nav-link text-white">Join the App</a>
+                        </li>
+                        <li class="nav-item navlinks">
+                            <a asp-controller="User" asp-action="Index" class="nav-link text-white">Log in</a>
+                        </li>
+                    </ul>
+                </header>
+            </div>
+        }
+
+        <div class="container-fluid p-0">
+            <main role="main" class="">
+                @RenderBody()
+            </main>
+        </div>
+
+        <footer class="py-3 mt-auto">
+            <div class="container d-flex flex-wrap justify-content-between align-items-center">
+                <p class="col-md-4 mb-0 text-body-secondary">© @DateTime.Now.Year Real State App, Inc</p>
+                @if (isAdmin)
+                {
+                    <a asp-controller="Administrator" asp-action="AdminHome" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 41 41" fill="none">
+                            <g clip-path="url(#clip0_48_159)">
+                                <mask id="mask0_48_159" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="41" height="41">
+                                    <path d="M0 0H41V41H0V0Z" fill="white" />
+                                </mask>
+                                <g mask="url(#mask0_48_159)">
+                                    <path d="M29.6481 26.9088H24.1644C23.5494 26.9088 23.0625 26.4219 23.0625 25.8069V20.3232C23.0625 19.721 23.5494 19.2213 24.1644 19.2213H29.6481C30.2503 19.2213 30.75 19.7082 30.75 20.3232V25.8069C30.75 26.4219 30.2631 26.9088 29.6481 26.9088Z" fill="#51555A" />
+                                    <path d="M23.4213 1.18273L23.4264 1.18913L39.7688 17.288L39.7726 17.2919C40.1614 17.6708 40.4704 18.1239 40.6812 18.6242C40.892 19.1245 41.0004 19.662 41.0001 20.205C40.9997 20.7479 40.8906 21.2853 40.6791 21.7853C40.4676 22.2854 40.1581 22.738 39.7688 23.1164C39.0679 23.8097 38.1401 24.2265 37.1563 24.2901V32.171C38.2514 32.4331 39.2262 33.0564 39.9236 33.9404C40.6209 34.8245 41.0002 35.9177 41 37.0436V39.7214H4.58416e-05V37.0436C-0.00171575 35.9171 0.376863 34.8229 1.07447 33.9384C1.77208 33.0538 2.74786 32.4306 3.8438 32.1698V24.3413C2.86048 24.2732 1.9337 23.8566 1.23005 23.1664C0.840797 22.7867 0.531414 22.333 0.320097 21.832C0.10878 21.3309 -0.000203352 20.7927 -0.000442112 20.2489C-0.000680872 19.7051 0.10783 19.1668 0.318707 18.6656C0.529584 18.1644 0.838568 17.7104 1.22748 17.3303L1.23133 17.3278L5.12505 13.4943V4.5127C5.12505 2.63823 6.6728 1.28138 8.38326 1.28138H12.1296C13.5416 1.28138 14.81 2.20388 15.2303 3.54792L17.6198 1.1917C19.2342 -0.412428 21.8223 -0.381679 23.4187 1.18145M12.8125 9.52238V4.5127C12.8105 4.3335 12.7375 4.16243 12.6094 4.03703C12.4814 3.91164 12.3088 3.84218 12.1296 3.84388H8.38326C8.29345 3.84167 8.20408 3.85731 8.12035 3.88988C8.03662 3.92246 7.96018 3.97132 7.89547 4.03365C7.83076 4.09598 7.77906 4.17052 7.74337 4.25297C7.70768 4.33543 7.6887 4.42414 7.68755 4.51398V14.5667L12.8125 9.52238ZM6.4063 20.1747V34.5964H8.9688C8.9688 33.8918 9.54536 33.3152 10.25 33.3152V21.0024C10.25 20.0414 11.0316 19.2599 11.9925 19.2599H18.7704C19.7313 19.2599 20.5129 20.0414 20.5129 21.0024V33.3178C21.1881 33.3511 21.73 33.9135 21.73 34.5964H34.5938V20.1234L20.5257 6.26929L6.4063 20.1747ZM19.2188 26.2683C19.2188 26.0984 19.1513 25.9355 19.0312 25.8153C18.911 25.6952 18.7481 25.6277 18.5782 25.6277C18.4083 25.6277 18.2453 25.6952 18.1252 25.8153C18.005 25.9355 17.9375 26.0984 17.9375 26.2683C17.9375 26.4382 18.005 26.6012 18.1252 26.7213C18.2453 26.8414 18.4083 26.9089 18.5782 26.9089C18.7481 26.9089 18.911 26.8414 19.0312 26.7213C19.1513 26.6012 19.2188 26.4382 19.2188 26.2683Z" fill="#51555A" />
+                                </g>
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_48_159">
+                                    <rect width="41" height="41" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                    </a>
+
+                    <ul class="nav col-md-4 justify-content-end">
+                        <li class="nav-item">
+                            <a asp-controller="Administrator" asp-action="AdminHome" class="nav-link px-2 text-body-secondary">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Agent" asp-action="Index" class="nav-link px-2 text-body-secondary">Agents</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="dropdown-toggle nav-link text-body-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                                Maintenances
+                            </a>
+                            <ul class="dropdown-menu shadow">
+                                <li><a asp-controller="Administrator" asp-action="Index" class="dropdown-item small text-white">Administrators</a></li>
+                                <li><a asp-controller="Developer" asp-action="Index" class="dropdown-item small text-white">Developers</a></li>
+                                <li><a asp-controller="PropertyType" asp-action="Index" class="dropdown-item small text-white">Type of Properties</a></li>
+                                <li><a asp-controller="SalesType" asp-action="Index" class="dropdown-item small text-white">Type of Sales</a></li>
+                                <li><a asp-controller="Upgrade" asp-action="Index" class="dropdown-item small text-white">Upgrades</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                }
+                else if (isAgent)
+                {
+                    <a asp-controller="Agent" asp-action="AgentHome" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 41 41" fill="none">
+                            <g clip-path="url(#clip0_48_159)">
+                                <mask id="mask0_48_159" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="41" height="41">
+                                    <path d="M0 0H41V41H0V0Z" fill="white" />
+                                </mask>
+                                <g mask="url(#mask0_48_159)">
+                                    <path d="M29.6481 26.9088H24.1644C23.5494 26.9088 23.0625 26.4219 23.0625 25.8069V20.3232C23.0625 19.721 23.5494 19.2213 24.1644 19.2213H29.6481C30.2503 19.2213 30.75 19.7082 30.75 20.3232V25.8069C30.75 26.4219 30.2631 26.9088 29.6481 26.9088Z" fill="#51555A" />
+                                    <path d="M23.4213 1.18273L23.4264 1.18913L39.7688 17.288L39.7726 17.2919C40.1614 17.6708 40.4704 18.1239 40.6812 18.6242C40.892 19.1245 41.0004 19.662 41.0001 20.205C40.9997 20.7479 40.8906 21.2853 40.6791 21.7853C40.4676 22.2854 40.1581 22.738 39.7688 23.1164C39.0679 23.8097 38.1401 24.2265 37.1563 24.2901V32.171C38.2514 32.4331 39.2262 33.0564 39.9236 33.9404C40.6209 34.8245 41.0002 35.9177 41 37.0436V39.7214H4.58416e-05V37.0436C-0.00171575 35.9171 0.376863 34.8229 1.07447 33.9384C1.77208 33.0538 2.74786 32.4306 3.8438 32.1698V24.3413C2.86048 24.2732 1.9337 23.8566 1.23005 23.1664C0.840797 22.7867 0.531414 22.333 0.320097 21.832C0.10878 21.3309 -0.000203352 20.7927 -0.000442112 20.2489C-0.000680872 19.7051 0.10783 19.1668 0.318707 18.6656C0.529584 18.1644 0.838568 17.7104 1.22748 17.3303L1.23133 17.3278L5.12505 13.4943V4.5127C5.12505 2.63823 6.6728 1.28138 8.38326 1.28138H12.1296C13.5416 1.28138 14.81 2.20388 15.2303 3.54792L17.6198 1.1917C19.2342 -0.412428 21.8223 -0.381679 23.4187 1.18145M12.8125 9.52238V4.5127C12.8105 4.3335 12.7375 4.16243 12.6094 4.03703C12.4814 3.91164 12.3088 3.84218 12.1296 3.84388H8.38326C8.29345 3.84167 8.20408 3.85731 8.12035 3.88988C8.03662 3.92246 7.96018 3.97132 7.89547 4.03365C7.83076 4.09598 7.77906 4.17052 7.74337 4.25297C7.70768 4.33543 7.6887 4.42414 7.68755 4.51398V14.5667L12.8125 9.52238ZM6.4063 20.1747V34.5964H8.9688C8.9688 33.8918 9.54536 33.3152 10.25 33.3152V21.0024C10.25 20.0414 11.0316 19.2599 11.9925 19.2599H18.7704C19.7313 19.2599 20.5129 20.0414 20.5129 21.0024V33.3178C21.1881 33.3511 21.73 33.9135 21.73 34.5964H34.5938V20.1234L20.5257 6.26929L6.4063 20.1747ZM19.2188 26.2683C19.2188 26.0984 19.1513 25.9355 19.0312 25.8153C18.911 25.6952 18.7481 25.6277 18.5782 25.6277C18.4083 25.6277 18.2453 25.6952 18.1252 25.8153C18.005 25.9355 17.9375 26.0984 17.9375 26.2683C17.9375 26.4382 18.005 26.6012 18.1252 26.7213C18.2453 26.8414 18.4083 26.9089 18.5782 26.9089C18.7481 26.9089 18.911 26.8414 19.0312 26.7213C19.1513 26.6012 19.2188 26.4382 19.2188 26.2683Z" fill="#51555A" />
+                                </g>
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_48_159">
+                                    <rect width="41" height="41" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                    </a>
+
+                    <ul class="nav col-md-4 justify-content-end">
+                        <li class="nav-item">
+                            <a asp-controller="Agent" asp-action="AgentHome" class="nav-link px-2 text-body-secondary">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Agent" asp-action="AgentPropertyMaintenance" class="nav-link px-2 text-body-secondary">Property maintenance</a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a asp-controller="Agent" asp-action="Edit" asp-route-Id="@User.Id" class="nav-link px-2 text-body-secondary">My profile</a>
+                        </li>
+                    </ul>
+                }
+                else if (isCustomer)
+                {
+                    <a asp-controller="Home" asp-action="CustomerHome" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 41 41" fill="none">
+                            <g clip-path="url(#clip0_48_159)">
+                                <mask id="mask0_48_159" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="41" height="41">
+                                    <path d="M0 0H41V41H0V0Z" fill="white" />
+                                </mask>
+                                <g mask="url(#mask0_48_159)">
+                                    <path d="M29.6481 26.9088H24.1644C23.5494 26.9088 23.0625 26.4219 23.0625 25.8069V20.3232C23.0625 19.721 23.5494 19.2213 24.1644 19.2213H29.6481C30.2503 19.2213 30.75 19.7082 30.75 20.3232V25.8069C30.75 26.4219 30.2631 26.9088 29.6481 26.9088Z" fill="#51555A" />
+                                    <path d="M23.4213 1.18273L23.4264 1.18913L39.7688 17.288L39.7726 17.2919C40.1614 17.6708 40.4704 18.1239 40.6812 18.6242C40.892 19.1245 41.0004 19.662 41.0001 20.205C40.9997 20.7479 40.8906 21.2853 40.6791 21.7853C40.4676 22.2854 40.1581 22.738 39.7688 23.1164C39.0679 23.8097 38.1401 24.2265 37.1563 24.2901V32.171C38.2514 32.4331 39.2262 33.0564 39.9236 33.9404C40.6209 34.8245 41.0002 35.9177 41 37.0436V39.7214H4.58416e-05V37.0436C-0.00171575 35.9171 0.376863 34.8229 1.07447 33.9384C1.77208 33.0538 2.74786 32.4306 3.8438 32.1698V24.3413C2.86048 24.2732 1.9337 23.8566 1.23005 23.1664C0.840797 22.7867 0.531414 22.333 0.320097 21.832C0.10878 21.3309 -0.000203352 20.7927 -0.000442112 20.2489C-0.000680872 19.7051 0.10783 19.1668 0.318707 18.6656C0.529584 18.1644 0.838568 17.7104 1.22748 17.3303L1.23133 17.3278L5.12505 13.4943V4.5127C5.12505 2.63823 6.6728 1.28138 8.38326 1.28138H12.1296C13.5416 1.28138 14.81 2.20388 15.2303 3.54792L17.6198 1.1917C19.2342 -0.412428 21.8223 -0.381679 23.4187 1.18145M12.8125 9.52238V4.5127C12.8105 4.3335 12.7375 4.16243 12.6094 4.03703C12.4814 3.91164 12.3088 3.84218 12.1296 3.84388H8.38326C8.29345 3.84167 8.20408 3.85731 8.12035 3.88988C8.03662 3.92246 7.96018 3.97132 7.89547 4.03365C7.83076 4.09598 7.77906 4.17052 7.74337 4.25297C7.70768 4.33543 7.6887 4.42414 7.68755 4.51398V14.5667L12.8125 9.52238ZM6.4063 20.1747V34.5964H8.9688C8.9688 33.8918 9.54536 33.3152 10.25 33.3152V21.0024C10.25 20.0414 11.0316 19.2599 11.9925 19.2599H18.7704C19.7313 19.2599 20.5129 20.0414 20.5129 21.0024V33.3178C21.1881 33.3511 21.73 33.9135 21.73 34.5964H34.5938V20.1234L20.5257 6.26929L6.4063 20.1747ZM19.2188 26.2683C19.2188 26.0984 19.1513 25.9355 19.0312 25.8153C18.911 25.6952 18.7481 25.6277 18.5782 25.6277C18.4083 25.6277 18.2453 25.6952 18.1252 25.8153C18.005 25.9355 17.9375 26.0984 17.9375 26.2683C17.9375 26.4382 18.005 26.6012 18.1252 26.7213C18.2453 26.8414 18.4083 26.9089 18.5782 26.9089C18.7481 26.9089 18.911 26.8414 19.0312 26.7213C19.1513 26.6012 19.2188 26.4382 19.2188 26.2683Z" fill="#51555A" />
+                                </g>
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_48_159">
+                                    <rect width="41" height="41" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                    </a>
+
+                    <ul class="nav col-md-4 justify-content-end">
+                        <li class="nav-item">
+                            <a asp-controller="Home" asp-action="CustomerHome" class="nav-link px-2 text-body-secondary">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Home" asp-action="Agents" class="nav-link px-2 text-body-secondary">Agents</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Property" asp-action="CustomerProperties" asp-route-Id="@User.Id" class="nav-link px-2 text-body-secondary">My properties</a>
+                        </li>
+                    </ul>
+                }
+                else if (isDeveloper)
+                {
+
+                }
+                else
+                {
+                    <a asp-controller="Home" asp-action="Index" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 41 41" fill="none">
+                            <g clip-path="url(#clip0_48_159)">
+                                <mask id="mask0_48_159" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="41" height="41">
+                                    <path d="M0 0H41V41H0V0Z" fill="white" />
+                                </mask>
+                                <g mask="url(#mask0_48_159)">
+                                    <path d="M29.6481 26.9088H24.1644C23.5494 26.9088 23.0625 26.4219 23.0625 25.8069V20.3232C23.0625 19.721 23.5494 19.2213 24.1644 19.2213H29.6481C30.2503 19.2213 30.75 19.7082 30.75 20.3232V25.8069C30.75 26.4219 30.2631 26.9088 29.6481 26.9088Z" fill="#51555A" />
+                                    <path d="M23.4213 1.18273L23.4264 1.18913L39.7688 17.288L39.7726 17.2919C40.1614 17.6708 40.4704 18.1239 40.6812 18.6242C40.892 19.1245 41.0004 19.662 41.0001 20.205C40.9997 20.7479 40.8906 21.2853 40.6791 21.7853C40.4676 22.2854 40.1581 22.738 39.7688 23.1164C39.0679 23.8097 38.1401 24.2265 37.1563 24.2901V32.171C38.2514 32.4331 39.2262 33.0564 39.9236 33.9404C40.6209 34.8245 41.0002 35.9177 41 37.0436V39.7214H4.58416e-05V37.0436C-0.00171575 35.9171 0.376863 34.8229 1.07447 33.9384C1.77208 33.0538 2.74786 32.4306 3.8438 32.1698V24.3413C2.86048 24.2732 1.9337 23.8566 1.23005 23.1664C0.840797 22.7867 0.531414 22.333 0.320097 21.832C0.10878 21.3309 -0.000203352 20.7927 -0.000442112 20.2489C-0.000680872 19.7051 0.10783 19.1668 0.318707 18.6656C0.529584 18.1644 0.838568 17.7104 1.22748 17.3303L1.23133 17.3278L5.12505 13.4943V4.5127C5.12505 2.63823 6.6728 1.28138 8.38326 1.28138H12.1296C13.5416 1.28138 14.81 2.20388 15.2303 3.54792L17.6198 1.1917C19.2342 -0.412428 21.8223 -0.381679 23.4187 1.18145M12.8125 9.52238V4.5127C12.8105 4.3335 12.7375 4.16243 12.6094 4.03703C12.4814 3.91164 12.3088 3.84218 12.1296 3.84388H8.38326C8.29345 3.84167 8.20408 3.85731 8.12035 3.88988C8.03662 3.92246 7.96018 3.97132 7.89547 4.03365C7.83076 4.09598 7.77906 4.17052 7.74337 4.25297C7.70768 4.33543 7.6887 4.42414 7.68755 4.51398V14.5667L12.8125 9.52238ZM6.4063 20.1747V34.5964H8.9688C8.9688 33.8918 9.54536 33.3152 10.25 33.3152V21.0024C10.25 20.0414 11.0316 19.2599 11.9925 19.2599H18.7704C19.7313 19.2599 20.5129 20.0414 20.5129 21.0024V33.3178C21.1881 33.3511 21.73 33.9135 21.73 34.5964H34.5938V20.1234L20.5257 6.26929L6.4063 20.1747ZM19.2188 26.2683C19.2188 26.0984 19.1513 25.9355 19.0312 25.8153C18.911 25.6952 18.7481 25.6277 18.5782 25.6277C18.4083 25.6277 18.2453 25.6952 18.1252 25.8153C18.005 25.9355 17.9375 26.0984 17.9375 26.2683C17.9375 26.4382 18.005 26.6012 18.1252 26.7213C18.2453 26.8414 18.4083 26.9089 18.5782 26.9089C18.7481 26.9089 18.911 26.8414 19.0312 26.7213C19.1513 26.6012 19.2188 26.4382 19.2188 26.2683Z" fill="#51555A" />
+                                </g>
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_48_159">
+                                    <rect width="41" height="41" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                    </a>
+
+                    <ul class="nav col-md-4 justify-content-end">
+                        <li class="nav-item">
+                            <a asp-controller="Home" asp-action="Index" class="nav-link px-2 text-body-secondary">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="Home" asp-action="Agents" class="nav-link px-2 text-body-secondary">Agents</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="User" asp-action="Create" class="nav-link px-2 text-body-secondary">Join the App</a>
+                        </li>
+                    </ul>
+                }
+            </div>
+        </footer>
+
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"
+            integrity="sha512-FHZVRMUW9FsXobt+ONiix6Z0tIkxvQfxtCSirkKc5Sb4TKHmqq1dZa8DphF0XqKb3ldLu/wgMa8mT6uXiLlRlw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

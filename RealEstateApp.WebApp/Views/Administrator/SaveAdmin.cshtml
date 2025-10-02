@@ -1,0 +1,112 @@
+﻿@using RealEstateApp.Core.Application.ViewModels.Account;
+@using RealEstateApp.Core.Application.Enums.Roles;
+@model SaveUserViewModel;
+@{
+    bool editMode = Model.Id == null ? false : true;
+    ViewData["Title"] = "Save Admin";
+}
+
+<div class="container d-flex justify-content-center">
+    <div class="row col-8">
+        <div class="inputBackground py-5 cardCustomize col-12 border">
+            <div class="d-flex justify-content-center align-items-center gap-3">
+                <a asp-controller="Administrator" asp-action="Index">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#47FFE9"
+                         class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z" />
+                    </svg>
+                </a>
+                <h2 class="p-0 mb-0 text-center fw-bold">@(editMode ? "Edit" : "New") admin</h2>
+            </div>
+            <div class="d-flex py-4 justify-content-center col-12">
+                <form method="post" asp-controller="Administrator" asp-action="@(editMode ? "Edit" : "Create")"
+                      class="d-flex justify-content-center">
+                    <div class="col-8">
+                        <div class="mb-4 d-flex justify-content-center gap-4 col-12">
+                            <div class="col-8">
+                                <div class="mb-3">
+                                    <label asp-for="FirstName" class="form-label fw-bold">FirstName</label>
+                                    <input asp-for="FirstName" class="form-control" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="LastName" class="form-label fw-bold">LastName</label>
+                                    <input asp-for="LastName" class="form-control" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="DocumentId" class="form-label fw-bold">DocumentID</label>
+                                    <input asp-for="DocumentId" class="form-control" />
+                                    <span asp-validation-for="DocumentId" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Email" class="form-label fw-bold">Email</label>
+                                    <input asp-for="Email" class="form-control" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="mb-3">
+                                    <label asp-for="PhoneNumber" class="form-label fw-bold">Phone number</label>
+                                    <input asp-for="PhoneNumber" class="form-control" />
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Username" class="form-label fw-bold">Username</label>
+                                    <input asp-for="Username" class="form-control" />
+                                    <span asp-validation-for="Username" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Password" class="form-label fw-bold me-2">Password</label>
+                                    <span href="#" id="chuleria" class="text-secondary" data-bs-toggle="tooltip"
+                                          data-bs-html="true" data-bs-placement="right"
+                                          data-bs-title="Must contain one uppercase character, one lowercase character, one digit and one non-alphanumeric character. At least six characters long.">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="#A7A9AD" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                                        </svg>
+                                    </span>
+                                    <input asp-for="Password" type="password" id="passwordSign"
+                                           class="form-control" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="ConfirmPassword" class="form-label fw-bold">Confirm Password</label>
+                                    <input asp-for="ConfirmPassword" id="ConfirmPassword"
+                                           class="form-control" />
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <input type="hidden" asp-for="Role" value="@nameof(UserRoles.Admin)" />
+                            <input type="hidden" asp-for="Id" />
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <div class="col-8">
+                                @if (Model.HasError)
+                                {
+                                    <div class="alert alert-danger alert-dismissible mb-3 fade show" role="alert">
+                                        <p class="mb-0">@Model.Error</p>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                }
+                                <button type="submit"
+                                        class="btn btn-info principalBlue btnPrincipalBlueHover border-0 w-100 fw-bold">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

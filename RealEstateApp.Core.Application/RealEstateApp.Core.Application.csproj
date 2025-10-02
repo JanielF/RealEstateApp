@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Features\TypeOfProperties\Queries\GetAllProperties\**" />
+    <Compile Remove="Features\TypeOfProperties\Queries\GetTypePropertyById\**" />
+    <Compile Remove="Features\Upgrade\**" />
+    <EmbeddedResource Remove="Features\TypeOfProperties\Queries\GetAllProperties\**" />
+    <EmbeddedResource Remove="Features\TypeOfProperties\Queries\GetTypePropertyById\**" />
+    <EmbeddedResource Remove="Features\Upgrade\**" />
+    <None Remove="Features\TypeOfProperties\Queries\GetAllProperties\**" />
+    <None Remove="Features\TypeOfProperties\Queries\GetTypePropertyById\**" />
+    <None Remove="Features\Upgrade\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\TypeOfProperties\Commands\CreateTypeProperty\" />
+    <Folder Include="Features\TypeOfProperties\Commands\DeleteTypeProperty\" />
+    <Folder Include="Features\TypeOfProperties\Commands\UpdateTypeProperty\" />
+    <Folder Include="Features\TypeOfProperties\Queries\GetAllProperties\" />
+    <Folder Include="Features\TypeOfProperties\Queries\GetTypePropertyById\" />
+    <Folder Include="Features\Upgrade\Commands\CreateUpgrade\" />
+    <Folder Include="Features\Upgrade\Commands\DeleteUpgrade\" />
+    <Folder Include="Features\Upgrade\Commands\UpdateUpgrade\" />
+    <Folder Include="Features\Upgrade\Queries\GetAllUpgrades\" />
+    <Folder Include="Features\Upgrade\Queries\GetUpgradeById\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Mappings\" />
+    <Folder Include="Wrappers\" />
+    <Folder Include="Exceptions\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.17" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RealEstateApp.Core.Domain\RealEstateApp.Core.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

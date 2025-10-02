@@ -1,0 +1,93 @@
+﻿@using RealEstateApp.Core.Application.ViewModels.Account;
+@model List<UserViewModel>;
+@{
+    ViewData["Title"] = "Agents";
+}
+
+<div class="container mt-5 mb-5">
+    <h2 class="fw-bold text-center mb-4">Search Our Agent Directory</h2>
+    <form method="post" class="mb-5" asp-controller="Home" asp-action="SearchAgent">
+        <div class="col-12 d-flex justify-content-center">
+            <div class="col-8 d-flex gap-2">
+                <input type="text"
+                       name="agentName"
+                       class="form-control inputBackground"
+                       placeholder="Search agent name..." />
+                <button class="btn btn-info fw-bold border-0 principalBlue btnPrincipalBlueHover d-flex gap-2 align-items-center"
+                        type="submit">
+                    Search
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="14"
+                         height="14"
+                         fill="currentColor"
+                         class="bi bi-search"
+                         viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </form>
+
+    @if (Model == null)
+    {
+
+        <div class="container-fluid d-flex flex-column p-0 w-100 h-100 p-3 mx-auto">
+            <div class="container mt-auto mb-auto d-flex align-items-center justify-content-center">
+                <div class="col-sm-9 col-md-7 col-lg-5 rounded-5 inputBackground border d-flex align-items-center justify-content-center py-5 px-1 box-shadow">
+                    <div class="col-12 d-flex justify-content-center align-content-center">
+                        <div class="col-8">
+                            <div class="text-center mb-2">
+@*                                 <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="#47FFE9"
+                                     class="bi bi-house-slash" viewBox="0 0 16 16">
+                                    <path d="M13.879 10.414a2.5 2.5 0 0 0-3.465 3.465zm.707.707-3.465 3.465a2.501 2.501 0 0 0 3.465-3.465m-4.56-1.096a3.5 3.5 0 1 1 4.949 4.95 3.5 3.5 0 0 1-4.95-4.95Z" />
+                                    <path d="M7.293 1.5a1 1 0 0 1 1.414 0L11 3.793V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v3.293l2.354 2.353a.5.5 0 0 1-.708.708L8 2.207l-5 5V13.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 2 13.5V8.207l-.646.647a.5.5 0 1 1-.708-.708z" />
+                                </svg> *@
+                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="#47FFE9" class="bi bi-person-fill-slash" viewBox="0 0 16 16">
+                                    <path d="M13.879 10.414a2.501 2.501 0 0 0-3.465 3.465zm.707.707-3.465 3.465a2.501 2.501 0 0 0 3.465-3.465m-4.56-1.096a3.5 3.5 0 1 1 4.949 4.95 3.5 3.5 0 0 1-4.95-4.95ZM11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0m-9 8c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4" />
+                                </svg>
+                            </div>
+                            <div class="text-center">
+                                <h2 class="tittle fw-bold">No agents</h2>
+                                @* <p class="mb-0">No agents found.</p> *@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-sm-3 row-cols-md-4 g-4">
+
+            @foreach (UserViewModel agent in Model)
+            {
+                <div class="col">
+                    <a asp-controller="Property" asp-action="AgentProperty" asp-route-Id="@agent.Id" class="text-decoration-none">
+                        <div class="p-4 bg-body-tertiary cardCustomize border">
+                            <div class="d-flex justify-content-center mb-3">
+                                <img src="@agent.UserImagePath" class="object-fit-cover rounded-circle" width="120" height="120" alt="">
+                            </div>
+                            <div>
+                                <div class="d-flex justify-content-center mb-3">
+                                    <p class="mb-0 fs-5 text-center text-white">@agent.FirstName @agent.LastName</p>
+                                </div>
+                                <div class="d-flex justify-content-center mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#47FFE9" class="bi bi-telephone-fill" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
+                                    </svg>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <a href="tel:+@agent.PhoneNumber" class="text-decoration-none text-white fw-light">@agent.PhoneNumber</a>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    }
+
+</div>

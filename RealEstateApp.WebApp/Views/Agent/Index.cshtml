@@ -1,0 +1,117 @@
+﻿@using RealEstateApp.Core.Application.ViewModels.Account;
+@model List<UserViewModel>;
+@{
+    ViewData["Title"] = "Agents";
+    int count = 0;
+}
+
+<div class="container p-4 px-5">
+    <div class="row">
+        <h1 class="p-0 mb-4">Agents</h1>
+        <div class="table-responsive py-5 px-5 border rounded-4 inputBackground">
+            <table class="table border-0 table-borderless align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">FirstName</th>
+                        <th scope="col">LastName</th>
+                        <th scope="col">Properties</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (UserViewModel user in Model)
+                    {
+                        count++;
+                        string idModalInactive = $"inactiveUser{user.Id}";
+                        string idModalActive = $"activeUser{user.Id}";
+                        string modalDeleteId = $"DeleteModal{user.Id}";
+                        <tr>
+                            <td>@count</td>
+                            <td>@user.FirstName</td>
+                            <td>@user.LastName</td>
+                            <td>@user.PropertyCount</td>
+                            <td>
+                                <a href="mailto:@user.Email" class="text-white text-decoration-none">@user.Email</a>
+                            </td>
+                            <td>
+                                @if (user.IsActive)
+                                {
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#@idModalInactive">
+                                        <span class="badge bg-info-subtle border border-info-subtle text-info-emphasis rounded-pill">Active</span>
+                                    </a>
+
+                                    <!-- Modal - Deactivate User -->
+                                    <div class="modal fade p-4 py-md-5" tabindex="-1" role="dialog" id="@idModalInactive" data-bs-backdrop="static">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content rounded-3 shadow">
+                                                <div class="modal-body p-4 text-center">
+                                                    <h5 class="mb-3 fw-bold">Deactivate this agent?</h5>
+                                                    <p class="mb-0">You can always change your mind and go back.</p>
+                                                </div>
+                                                <div class="modal-footer flex-nowrap p-0">
+                                                    <a class="btn btn-lg btn-link hightlightedBTN fs-6 text-decoration-none col-6 py-3 m-0 rounded-0 border-end" asp-action="DeactivateUser" asp-controller="Agent" asp-route-Id="@user.Id"><strong>Yes, enable</strong></a>
+                                                    <button type="button" class="btn btn-lg btn-link hightlightedBTN fs-6 text-decoration-none col-6 py-3 m-0 rounded-0" data-bs-dismiss="modal">No thanks</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#@idModalActive">
+                                        <span class="badge bg-light-subtle border border-light-subtle text-light-emphasis rounded-pill">Inactive</span>
+                                    </a>
+
+                                    <!-- Modal - Activate User -->
+                                    <div class="modal fade p-4 py-md-5" tabindex="-1" role="dialog" id="@idModalActive" data-bs-backdrop="static">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content rounded-3 shadow">
+                                                <div class="modal-body p-4 text-center">
+                                                    <h5 class="mb-3 fw-bold">Activate this agent?</h5>
+                                                    <p class="mb-0">You can always change your mind and go back.</p>
+                                                </div>
+                                                <div class="modal-footer flex-nowrap p-0">
+                                                    <a class="btn btn-lg btn-link hightlightedBTN fs-6 text-decoration-none col-6 py-3 m-0 rounded-0 border-end" asp-action="ActivateUser" asp-controller="Agent" asp-route-Id="@user.Id"><strong>Yes, enable</strong></a>
+                                                    <button type="button" class="btn btn-lg btn-link hightlightedBTN fs-6 text-decoration-none col-6 py-3 m-0 rounded-0" data-bs-dismiss="modal">No thanks</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <a type="button" data-bs-toggle="modal" data-bs-target="#@modalDeleteId"
+                                            class="btn btn-outline-secondary rounded-end-2 d-flex align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
+                                        </svg>
+                                    </a>
+
+                                    <!-- Modal - Delete Product -->
+                                    <div class="modal fade p-4 py-md-5" tabindex="-1" role="dialog" id="@modalDeleteId" data-bs-backdrop="static">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content rounded-3 shadow">
+                                                <div class="modal-body p-4 text-center">
+                                                    <h5 class="mb-3 fw-bold">Delete this agent? @user.FirstName @user.LastName</h5>
+                                                    <p class="mb-0">You can always change your mind and go back.</p>
+                                                </div>
+                                                <div class="modal-footer flex-nowrap p-0">
+                                                    <a class="btn btn-lg btn-link hightlightedBTN fs-6 text-decoration-none col-6 py-3 m-0 rounded-0 border-end" asp-action="Delete" asp-controller="Agent" asp-route-Id="@user.Id"><strong>Yes, enable</strong></a>
+                                                    <button type="button" class="btn btn-lg btn-link hightlightedBTN fs-6 text-decoration-none col-6 py-3 m-0 rounded-0" data-bs-dismiss="modal">No thanks</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
