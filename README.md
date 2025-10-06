@@ -96,7 +96,7 @@ El proyecto está estructurado como una **aplicación web ASP.NET** con componen
 
 ## 📷 Imágenes del Proyecto
 
-*(Capturas próximamente)*
+*Imagenes incorporadas en el Documento Visión*
 
 ---
 
@@ -104,6 +104,13 @@ El proyecto está estructurado como una **aplicación web ASP.NET** con componen
 
 - **Janiel Flores Almanzar**  
 - **Gabriel Alcantara**
+
+- ## 📜 Equipo de Documento Visión
+
+- **Adam Mateo Reyes**  
+- **Oscar Alejandro**
+- **Bryan Sachez**
+- **Christian Adolfo**
 
 
 
@@ -115,23 +122,4 @@ El proyecto está estructurado como una **aplicación web ASP.NET** con componen
 
 ## 🧱 Estado del Proyecto
 
-🟢 **En desarrollo – Fase inicial.**  
-Actualmente se están implementando los módulos base para publicación y visualización de propiedades.
-
----
-
-## 📅 Próximos Pasos
-
-1. Implementar autenticación para agentes y clientes.  
-2. Crear el CRUD de propiedades con validaciones.  
-3. Integrar base de datos SQL Server.  
-4. Desarrollar interfaz responsive en HTML y CSS.  
-5. Publicar la primera versión funcional.
-
----
-
-## ⚙️ Instrucciones de Ejecución (local)
-
-1. Clona el repositorio:
-   ```bash
-   git clone https://github.com/JanielF/RealEstateApp.git
+🟢 **Finalizado*  
