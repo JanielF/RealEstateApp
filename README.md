@@ -103,9 +103,9 @@ El proyecto está estructurado como una **aplicación web ASP.NET** con componen
 ## 🧑‍💻 Equipo de Desarrollo
 
 - **Janiel Flores Almanzar**  
-*(y colaboradores del equipo académico)*
+- **Gabriel Alcantara**
 
----
+
 
 ## 📎 Enlace del Repositorio
 
