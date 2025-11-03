@@ -97,6 +97,7 @@ El proyecto está estructurado como una **aplicación web ASP.NET** con componen
 ## 📷 Imágenes del Proyecto
 
 *Imagenes incorporadas en el Documento Visión*
+*Se agregaron nuevas imagenes a el documento Visión*
 
 ---
 
